@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日本 eSIM 網路穩定度與方案比較指南 (非港陸 IP 專用)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: #f8fafc;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="bg-red-500 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">100% 避開港陸 IP</span>
+            <span class="bg-emerald-500 text-xs font-bold px-2 py-0.5 rounded-full">2026 最新評比</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1 flex items-center gap-2">
+            🇯🇵 日本 eSIM 網路穩定度與方案比較
+          </h1>
+          <p class="text-blue-100 text-sm mt-1">自選 1~30 天、實測延遲 Ping 值、穩定度星級評比與一鍵購買連結</p>
+        </div>
+        <button onclick="toggleIpModal()" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-4 py-2 rounded-xl text-sm font-medium transition backdrop-blur-sm">
+          <i data-lucide="shield-alert" class="w-4 h-4 text-amber-300"></i>
+          為什麼要避開港陸 IP？
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    
+    <!-- Controls Section: Days & Filters -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        
+        <!-- Day Selector (Left/Middle) -->
+        <div class="lg:col-span-7 space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="font-bold text-slate-800 flex items-center gap-2 text-base">
+              <i data-lucide="calendar" class="w-5 h-5 text-blue-600"></i>
+              選擇旅遊天數 (自選 1 ~ 30 天)：
+            </label>
+            <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+              <button onclick="adjustDays(-1)" class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">-</button>
+              <input type="number" id="dayInput" min="1" max="30" value="5" onchange="setDays(this.value)" class="w-14 text-center font-bold text-blue-700 bg-transparent focus:outline-none" />
+              <span class="text-slate-500 text-xs pr-2">天</span>
+              <button onclick="adjustDays(1)" class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition">+</button>
+            </div>
+          </div>
+
+          <!-- Slider -->
+          <input type="range" id="daySlider" min="1" max="30" value="5" oninput="setDays(this.value)" class="w-full accent-blue-600 h-2 bg-slate-200 rounded-lg cursor-pointer" />
+
+          <!-- Preset Quick Buttons -->
+          <div class="flex flex-wrap gap-2 pt-1">
+            <span class="text-xs text-slate-400 self-center mr-1">熱門快捷:</span>
+            <button onclick="setDays(3)" class="preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition" data-day="3">3 天</button>
+            <button onclick="setDays(4)" class="preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition" data-day="4">4 天 (快閃/快裝)</button>
+            <button onclick="setDays(5)" class="preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition" data-day="5">5 天 (經典首選)</button>
+            <button onclick="setDays(7)" class="preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition" data-day="7">7 天</button>
+            <button onclick="setDays(8)" class="preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition" data-day="8">8 天 (雙週休假)</button>
+            <button onclick="setDays(10)" class="preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition" data-day="10">10 天</button>
+            <button onclick="setDays(14)" class="preset-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-500 hover:text-blue-600 transition" data-day="14">14 天</button>
+          </div>
+        </div>
+
+        <!-- Filters (Right) -->
+        <div class="lg:col-span-5 bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col justify-between gap-3">
+          <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">進階篩選條件</div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs text-slate-600 mb-1 block font-medium">流量類型</label>
+              <select id="typeFilter" onchange="renderApp()" class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-2 focus:outline-none focus:border-blue-500">
+                <option value="all">全部流量包類型</option>
+                <option value="unlimited">吃到飽 (不限速/降速)</option>
+                <option value="daily">每日型 (如 1GB/2GB 日)</option>
+                <option value="total">總量型 (如 10GB 總量)</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs text-slate-600 mb-1 block font-medium">排序方式</label>
+              <select id="sortFilter" onchange="renderApp()" class="w-full text-xs font-medium bg-white border border-slate-200 rounded-lg px-2.5 py-2 focus:outline-none focus:border-blue-500">
+                <option value="stability">網路穩定度 (高至低)</option>
+                <option value="priceAsc">預估總價 (低至高)</option>
+                <option value="rating">綜合推薦度 (高至低)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Active Filter Summary & View Switcher -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+      <div class="flex items-center gap-2">
+        <h2 class="text-lg font-bold text-slate-800">適合天數：<span id="selectedDaysText" class="text-blue-600 text-xl font-extrabold">5</span> 天的 eSIM 方案</h2>
+        <span class="text-xs bg-blue-100 text-blue-700 font-semibold px-2.5 py-1 rounded-full" id="resultCount">共 8 款方案</span>
+      </div>
+      
+      <!-- View Toggle -->
+      <div class="flex items-center gap-1 bg-slate-200 p-1 rounded-xl text-xs font-medium self-end sm:self-auto">
+        <button id="btnCardView" onclick="setView('card')" class="px-3 py-1.5 rounded-lg bg-white shadow-sm text-slate-800 font-bold transition flex items-center gap-1">
+          <i data-lucide="layout-grid" class="w-4 h-4"></i> 卡片顯示
+        </button>
+        <button id="btnTableView" onclick="setView('table')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1">
+          <i data-lucide="table" class="w-4 h-4"></i> 表格對照
+        </button>
+      </div>
+    </div>
+
+    <!-- Cards Container -->
+    <div id="cardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Dynamic rendering via JS -->
+    </div>
+
+    <!-- Table Container (Hidden by default) -->
+    <div id="tableContainer" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left border-collapse min-w-[900px]">
+          <thead>
+            <tr class="bg-slate-100 text-slate-700 text-xs font-bold uppercase tracking-wider border-b border-slate-200">
+              <th class="p-4">品牌 / 方案</th>
+              <th class="p-4">網路穩定度評分</th>
+              <th class="p-4">IP 種類 & 漫遊線路</th>
+              <th class="p-4">電信商與 Ping 延遲</th>
+              <th class="p-4">流量說明</th>
+              <th class="p-4">目前天數總價</th>
+              <th class="p-4 text-center">購買 / 詳情</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody" class="divide-y divide-slate-100 text-sm">
+            <!-- Dynamic rendering via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal Component: Plan Detail -->
+  <div id="planModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <button onclick="closePlanModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100 p-1.5 rounded-full">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div id="modalContent">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Component: IP Knowledge -->
+  <div id="ipModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <button onclick="toggleIpModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-100 p-1.5 rounded-full">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div class="flex items-center gap-3 text-red-600 mb-4">
+        <i data-lucide="shield-alert" class="w-7 h-7"></i>
+        <h3 class="text-xl font-bold text-slate-900">為什麼日本旅遊要避開香港/中國 IP？</h3>
+      </div>
+      <div class="space-y-4 text-sm text-slate-600 leading-relaxed">
+        <p>許多廉價 eSIM 雖然標榜「日本使用」，但實際上是採用 **香港電信 (如 HKT/PCCW)** 或 **中國移動/聯通** 的漫遊伺服器將數據封包繞道傳輸。</p>
+        
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-amber-900">
+          <strong class="block mb-1">使用香港 / 中國 IP 會遇到的嚴重問題：</strong>
+          <ul class="list-disc pl-5 space-y-1">
+            <li><strong>ChatGPT / OpenAI 封鎖：</strong>會出現 1020 拒絕訪問或無法登入。</li>
+            <li><strong>TikTok 無法刷動：</strong>會因為區域政策直接停擺。</li>
+            <li><strong>PayPay 與日本在地 App 阻擋：</strong>日本 PayPay 與部分行動支付拒絕非日本本土 IP 交易。</li>
+            <li><strong>台灣網路銀行限制：</strong>部分台灣銀行 App 偵測到中國/香港 IP 會強制鎖定安全權限。</li>
+            <li><strong>高延遲 (Ping 150-250ms)：</strong>因為封包繞道香港，打遊戲或傳送訊息時會有明顯卡頓感。</li>
+          </ul>
+        </div>
+
+        <div class="bg-emerald-50 border-l-4 border-emerald-500 p-3 rounded text-emerald-900">
+          <strong class="block mb-1">本站推薦的「日本原生 IP / 台灣 IP」優勢：</strong>
+          <ul class="list-disc pl-5 space-y-1">
+            <li><strong>日本原生 IP：</strong>數據直接在日本電信商（Docomo/SoftBank/KDDI）機房解封包，延遲極低（< 40ms），所有 App 完全正常使用。</li>
+            <li><strong>台灣漫遊 IP：</strong>數據繞回台灣電信（如中華/台哥大），IP 顯示為台灣，所有台灣 App、網銀、LINE 100% 順暢。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-6 text-right">
+        <button onclick="toggleIpModal()" class="bg-slate-800 text-white px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-slate-700 transition">我瞭解了</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+      <p>⚠️ 本工具計算之價格為各大品牌與平台（DJB、威訊 WaySim、Joytel、KKday、Klook 等）的預估價格，實際優惠與售價請以官方購買頁面即時標示為準。</p>
+      <p>© 2026 日本 eSIM 網路穩定度評比工具 | 專為拒絕港陸 IP 繞道的旅客設計</p>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script>
+    // --- Data Model ---
+    const esimPlans = [
+      {
+        id: "djb-plus",
+        brand: "DJB",
+        name: "暢日卡 PLUS (日本原生 IP)",
+        badge: "熱銷評比冠軍",
+        ipType: "日本原生 IP",
+        ipBadgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        type: "unlimited",
+        typeLabel: "真・無限吃到飽 (不降速)",
+        carrier: "SoftBank / KDDI 雙電信",
+        ping: "20 - 45 ms (極低延遲)",
+        stabilityScore: 5.0,
+        stabilityStars: "★★★★★",
+        peakPerformance: "迪士尼/環球影城極度順暢",
+        hotspot: "可分享 (建議單人使用觀感最佳)",
+        buyUrl: "https://esim.djbglobal.com/",
+        basePriceDay1: 290,
+        extraPricePerDay: 110,
+        features: ["無每日流量上限", "雙電信自動切換", "極致低延遲", "不封鎖任何 App"],
+        desc: "DJB 旗下最高規格方案，採用日本 SoftBank 與 KDDI 原生專線。在萬人擁擠的景點依然能維持高網速與極低 Ping 值。"
+      },
+      {
+        id: "waysim-power",
+        brand: "威訊 WaySim",
+        name: "日本 eSIM 網速霸 (原生線路)",
+        badge: "穩定度爆表",
+        ipType: "日本原生 IP",
+        ipBadgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        type: "unlimited",
+        typeLabel: "吃到飽 (公平使用原則降速)",
+        carrier: "Docomo / SoftBank 原生",
+        ping: "25 - 50 ms (超順暢)",
+        stabilityScore: 4.9,
+        stabilityStars: "★★★★★",
+        peakPerformance: "高峰期表現極佳",
+        hotspot: "支援熱點分享",
+        buyUrl: "https://waysim.net/",
+        basePriceDay1: 250,
+        extraPricePerDay: 95,
+        features: ["高穩定訊號", "全日高畫質看片", "24hr 線上客服支援"],
+        desc: "威訊主打的高階原生 IP 方案，深受批踢踢與 Dcard 日本版網友好評，電信收訊覆蓋率極廣。"
+      },
+      {
+        id: "joytel-gold",
+        brand: "Joytel",
+        name: "日本原生金卡 eSIM",
+        badge: "CP 值頂級原生",
+        ipType: "日本原生 IP",
+        ipBadgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        type: "daily",
+        typeLabel: "每日 2GB/3GB 後降速 128kbps",
+        carrier: "KDDI / Docomo",
+        ping: "30 - 55 ms",
+        stabilityScore: 4.8,
+        stabilityStars: "★★★★☆",
+        peakPerformance: "市區與地鐵收訊良好",
+        hotspot: "可分享",
+        buyUrl: "https://www.joytel-tw.com/",
+        basePriceDay1: 210,
+        extraPricePerDay: 75,
+        features: ["價格親民", "自動開通免繁複設定", "原廠原生品質 Guarantee"],
+        desc: "小資族首選的原生 IP eSIM，提供充足的每日高速流量，超額後維持基本聊 LINE 降速流量。"
+      },
+      {
+        id: "kkday-native",
+        brand: "KKday 嚴選",
+        name: "日本 Docomo/KDDI 高速原生 eSIM",
+        badge: "平台訂購方便",
+        ipType: "日本原生 IP",
+        ipBadgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        type: "daily",
+        typeLabel: "每日 1GB/2GB 或 總量型",
+        carrier: "Docomo / KDDI",
+        ping: "30 - 60 ms",
+        stabilityScore: 4.7,
+        stabilityStars: "★★★★☆",
+        peakPerformance: "繁華商圈收訊優良",
+        hotspot: "可分享",
+        buyUrl: "https://www.kkday.com/",
+        basePriceDay1: 190,
+        extraPricePerDay: 70,
+        features: ["KKday App 即買即拿 QR", "可折抵 KKday Points", "多天數彈性選擇"],
+        desc: "由 KKday 嚴選合作電信商直營的原生 IP eSIM，出發前幾分鐘下單即可快速收信開通。"
+      },
+      {
+        id: "klook-softbank",
+        brand: "Klook 嚴選",
+        name: "日本 SoftBank 4G/5G 原生高速 eSIM",
+        badge: "優惠活動多",
+        ipType: "日本原生 IP",
+        ipBadgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        type: "unlimited",
+        typeLabel: "每日 2GB / 吃到飽",
+        carrier: "SoftBank 原生",
+        ping: "25 - 50 ms",
+        stabilityScore: 4.7,
+        stabilityStars: "★★★★☆",
+        peakPerformance: "大型都市與觀光區優異",
+        hotspot: "支援熱點",
+        buyUrl: "https://www.klook.com/",
+        basePriceDay1: 195,
+        extraPricePerDay: 72,
+        features: ["Klook 獨家折扣碼適用", "即時發送憑證", "退訂政策彈性"],
+        desc: "Klook 提供的 SoftBank 原生卡方案，連線延遲低，打卡傳照片快速不延遲。"
+      },
+      {
+        id: "djb-taiwan-ip",
+        brand: "DJB",
+        name: "台灣 IP 漫遊旗艦卡 (台灣機房轉接)",
+        badge: "台灣App完全相容",
+        ipType: "台灣漫遊 IP",
+        ipBadgeClass: "bg-blue-100 text-blue-800 border-blue-200",
+        type: "unlimited",
+        typeLabel: "吃到飽不降速",
+        carrier: "Chunghwa / SoftBank 合作漫遊",
+        ping: "60 - 90 ms (台灣轉接)",
+        stabilityScore: 4.6,
+        stabilityStars: "★★★★☆",
+        peakPerformance: "網銀與台灣 App 登入最順手",
+        hotspot: "可熱點分享",
+        buyUrl: "https://esim.djbglobal.com/",
+        basePriceDay1: 270,
+        extraPricePerDay: 100,
+        features: ["IP 顯示為台灣", "網銀/股票 App 零擋阻", "不用更換定位設定"],
+        desc: "雖然 Ping 值比日本原生卡稍高（需傳回台灣機房），但優點是 100% 保持台灣 IP，適合旅行期間需頻繁處理台灣網銀與交易的人士。"
+      },
+      {
+        id: "ubigi-japan",
+        brand: "Ubigi",
+        name: "Ubigi Japan eSIM (日本/國際專線)",
+        badge: "跨國大廠技術",
+        ipType: "歐美/日本轉接 IP (非港陸)",
+        ipBadgeClass: "bg-purple-100 text-purple-800 border-purple-200",
+        type: "total",
+        typeLabel: "總量型 (3GB / 10GB / 50GB)",
+        carrier: "NTT Docomo",
+        ping: "40 - 70 ms",
+        stabilityScore: 4.8,
+        stabilityStars: "★★★★☆",
+        peakPerformance: "偏遠地區/郊區 Docomo 涵蓋廣",
+        hotspot: "完整支援熱點",
+        buyUrl: "https://cellulardata.ubigi.com/",
+        basePriceDay1: 240,
+        extraPricePerDay: 50, // 總量型天數加價較少
+        features: ["可直接在 App 內隨時加購流量", "專用 App 監控用量", "NTT Docomo 頂級涵蓋"],
+        desc: "法國知名 eSIM 品牌，在日本採用 NTT Docomo 網路，訊號極佳，非常適合自駕玩北海道、東北或沖繩離島。"
+      },
+      {
+        id: "airalo-moshi",
+        brand: "Airalo",
+        name: "Airalo Moshi Moshi (日本專線)",
+        badge: "全球最大 eSIM 平台",
+        ipType: "新加坡/國際轉接 IP (非港陸)",
+        ipBadgeClass: "bg-purple-100 text-purple-800 border-purple-200",
+        type: "total",
+        typeLabel: "總量型 (1GB ~ 20GB)",
+        carrier: "SoftBank / KDDI",
+        ping: "50 - 80 ms",
+        stabilityScore: 4.5,
+        stabilityStars: "★★★★☆",
+        peakPerformance: "市區通訊穩定",
+        hotspot: "支援熱點分享",
+        buyUrl: "https://www.airalo.com/",
+        basePriceDay1: 160,
+        extraPricePerDay: 45,
+        features: ["全球數百萬用戶驗證", "介面全英文/中文支援", "支援推薦碼折扣"],
+        desc: "適合輕度網路使用者，或是去日本 4 天、8 天只需要 5GB~10GB 總量查地圖與通訊的自由行旅客。"
+      }
+    ];
+
+    // --- State ---
+    let currentDays = 5;
+    let currentView = 'card'; // 'card' or 'table'
+
+    // --- Price Calculator Helper ---
+    function getEstimatedPrice(plan, days) {
+      // Basic dynamic formula for estimation
+      const total = plan.basePriceDay1 + (days - 1) * plan.extraPricePerDay;
+      const dailyAvg = Math.round(total / days);
+      return { total, dailyAvg };
+    }
+
+    // --- Day Handlers ---
+    function setDays(value) {
+      let days = parseInt(value, 10);
+      if (isNaN(days)) days = 1;
+      if (days < 1) days = 1;
+      if (days > 30) days = 30;
+      
+      currentDays = days;
+
+      document.getElementById('dayInput').value = days;
+      document.getElementById('daySlider').value = days;
+      document.getElementById('selectedDaysText').innerText = days;
+
+      // Update Quick Preset Active States
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        const d = parseInt(btn.getAttribute('data-day'), 10);
+        if (d === days) {
+          btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+          btn.classList.remove('border-slate-200', 'hover:border-blue-500', 'hover:text-blue-600');
+        } else {
+          btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+          btn.classList.add('border-slate-200');
+        }
+      });
+
+      renderApp();
+    }
+
+    function adjustDays(delta) {
+      setDays(currentDays + delta);
+    }
+
+    function setView(view) {
+      currentView = view;
+      const btnCard = document.getElementById('btnCardView');
+      const btnTable = document.getElementById('btnTableView');
+      const containerCard = document.getElementById('cardsContainer');
+      const containerTable = document.getElementById('tableContainer');
+
+      if (view === 'card') {
+        btnCard.className = "px-3 py-1.5 rounded-lg bg-white shadow-sm text-slate-800 font-bold transition flex items-center gap-1";
+        btnTable.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1";
+        containerCard.classList.remove('hidden');
+        containerTable.classList.add('hidden');
+      } else {
+        btnTable.className = "px-3 py-1.5 rounded-lg bg-white shadow-sm text-slate-800 font-bold transition flex items-center gap-1";
+        btnCard.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center gap-1";
+        containerTable.classList.remove('hidden');
+        containerCard.classList.add('hidden');
+      }
+    }
+
+    // --- Filtering & Sorting ---
+    function getFilteredPlans() {
+      const typeVal = document.getElementById('typeFilter').value;
+      const sortVal = document.getElementById('sortFilter').value;
+
+      let result = esimPlans.filter(plan => {
+        if (typeVal !== 'all' && plan.type !== typeVal) return false;
+        return true;
+      });
+
+      result.sort((a, b) => {
+        if (sortVal === 'stability') {
+          return b.stabilityScore - a.stabilityScore;
+        } else if (sortVal === 'priceAsc') {
+          return getEstimatedPrice(a, currentDays).total - getEstimatedPrice(b, currentDays).total;
+        } else if (sortVal === 'rating') {
+          return b.stabilityScore - a.stabilityScore;
+        }
+        return 0;
+      });
+
+      return result;
+    }
+
+    // --- Render Functions ---
+    function renderApp() {
+      const plans = getFilteredPlans();
+      document.getElementById('resultCount').innerText = `共 ${plans.length} 款方案`;
+
+      // 1. Render Cards
+      const cardsContainer = document.getElementById('cardsContainer');
+      cardsContainer.innerHTML = plans.map(plan => {
+        const price = getEstimatedPrice(plan, currentDays);
+        return `
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between overflow-hidden relative group">
+            
+            <!-- Top Header Badge -->
+            <div class="p-5 pb-4 border-b border-slate-100">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold px-2.5 py-1 rounded-md border ${plan.ipBadgeClass}">
+                  ${plan.ipType}
+                </span>
+                <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full flex items-center gap-1">
+                  ${plan.badge}
+                </span>
+              </div>
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">${plan.brand}</div>
+              <h3 class="text-lg font-bold text-slate-900 mt-0.5 leading-snug">${plan.name}</h3>
+            </div>
+
+            <!-- Stability & Specs Section -->
+            <div class="p-5 space-y-3 flex-1 text-xs">
+              
+              <!-- Stability Score Row -->
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-slate-700 flex items-center gap-1">
+                    <i data-lucide="signal" class="w-3.5 h-3.5 text-emerald-600"></i>
+                    穩定度評分:
+                  </span>
+                  <span class="font-extrabold text-amber-500 text-sm flex items-center gap-1">
+                    ${plan.stabilityStars} <span class="text-slate-700 text-xs">(${plan.stabilityScore})</span>
+                  </span>
+                </div>
+                <div class="flex items-center justify-between text-slate-500">
+                  <span>實測延遲 Ping:</span>
+                  <span class="font-mono font-bold text-slate-800">${plan.ping}</span>
+                </div>
+                <div class="text-slate-500 pt-0.5 border-t border-slate-200/60 flex items-center justify-between">
+                  <span>高峰期 (景點):</span>
+                  <span class="font-medium text-slate-700">${plan.peakPerformance}</span>
+                </div>
+              </div>
+
+              <!-- General Info -->
+              <div class="space-y-1.5 text-slate-600">
+                <div class="flex justify-between">
+                  <span class="text-slate-400">合作電信：</span>
+                  <span class="font-medium text-slate-800">${plan.carrier}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">流量機制：</span>
+                  <span class="font-medium text-slate-800">${plan.typeLabel}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">熱點分享：</span>
+                  <span class="font-medium text-slate-800">${plan.hotspot}</span>
+                </div>
+              </div>
+
+              <!-- Bullet Features -->
+              <div class="pt-2 flex flex-wrap gap-1">
+                ${plan.features.map(f => `<span class="bg-slate-100 text-slate-600 text-[11px] px-2 py-0.5 rounded-md">✓ ${f}</span>`).join('')}
+              </div>
+            </div>
+
+            <!-- Price & Actions Footer -->
+            <div class="p-5 pt-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div>
+                <div class="text-[11px] text-slate-400 font-medium">${currentDays} 天預估總價</div>
+                <div class="text-xl font-extrabold text-blue-700">
+                  NT$ ${price.total}
+                  <span class="text-xs font-normal text-slate-500"> (均 NT$${price.dailyAvg}/日)</span>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-1.5">
+                <button onclick="openPlanModal('${plan.id}')" class="px-3 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold rounded-xl text-xs transition">
+                  詳情
+                </button>
+                <a href="${plan.buyUrl}" target="_blank" rel="noopener noreferrer" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-1 shadow-sm">
+                  <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                  前往購買
+                </a>
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      // 2. Render Table
+      const tableBody = document.getElementById('tableBody');
+      tableBody.innerHTML = plans.map(plan => {
+        const price = getEstimatedPrice(plan, currentDays);
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-4">
+              <div class="text-xs font-bold text-slate-400">${plan.brand}</div>
+              <div class="font-bold text-slate-900">${plan.name}</div>
+            </td>
+            <td class="p-4">
+              <div class="font-bold text-amber-500">${plan.stabilityStars} (${plan.stabilityScore})</div>
+              <div class="text-xs text-slate-500">${plan.peakPerformance}</div>
+            </td>
+            <td class="p-4">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-md border ${plan.ipBadgeClass}">
+                ${plan.ipType}
+              </span>
+            </td>
+            <td class="p-4">
+              <div class="font-medium text-slate-800 text-xs">${plan.carrier}</div>
+              <div class="text-xs text-slate-500 font-mono">Ping: ${plan.ping}</div>
+            </td>
+            <td class="p-4 text-xs text-slate-600">
+              ${plan.typeLabel}
+            </td>
+            <td class="p-4">
+              <div class="font-extrabold text-blue-700">NT$ ${price.total}</div>
+              <div class="text-xs text-slate-400">均 NT$${price.dailyAvg}/日 (${currentDays}天)</div>
+            </td>
+            <td class="p-4 text-center">
+              <div class="flex items-center justify-center gap-2">
+                <button onclick="openPlanModal('${plan.id}')" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition">
+                  規格
+                </button>
+                <a href="${plan.buyUrl}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs transition inline-flex items-center gap-1">
+                  <i data-lucide="external-link" class="w-3 h-3"></i> 購買
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Re-initialize Lucide icons
+      lucide.createIcons();
+    }
+
+    // --- Modal Logic ---
+    function openPlanModal(planId) {
+      const plan = esimPlans.find(p => p.id === planId);
+      if (!plan) return;
+
+      const price = getEstimatedPrice(plan, currentDays);
+      const modalContent = document.getElementById('modalContent');
+
+      modalContent.innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">${plan.brand} 官方方案</span>
+            <h3 class="text-xl font-extrabold text-slate-900">${plan.name}</h3>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-xl space-y-2 border border-slate-100 text-sm">
+            <div class="flex justify-between border-b border-slate-200 pb-2">
+              <span class="text-slate-500">IP 路由屬性：</span>
+              <span class="font-bold text-emerald-700">${plan.ipType} (非港陸)</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-200 pb-2">
+              <span class="text-slate-500">穩定度評分：</span>
+              <span class="font-bold text-amber-500">${plan.stabilityStars} (${plan.stabilityScore} / 5.0)</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-200 pb-2">
+              <span class="text-slate-500">實測 Ping 延遲：</span>
+              <span class="font-mono font-bold text-slate-800">${plan.ping}</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-200 pb-2">
+              <span class="text-slate-500">合作日本電信：</span>
+              <span class="font-medium text-slate-800">${plan.carrier}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">熱點分享政策：</span>
+              <span class="font-medium text-slate-800">${plan.hotspot}</span>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-sm">
+            <h4 class="font-bold text-slate-800">方案詳細特點描述：</h4>
+            <p class="text-slate-600 leading-relaxed text-xs bg-blue-50/50 p-3 rounded-xl border border-blue-100">${plan.desc}</p>
+          </div>
+
+          <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 text-xs text-amber-900 space-y-1">
+            <strong class="flex items-center gap-1 font-bold">
+              <i data-lucide="info" class="w-4 h-4"></i>
+              相容性提示：
+            </strong>
+            <p>請確認您的手機支援 eSIM 功能（iPhone 11 或更新機型；Android 需視各品牌規格）。中港澳版 iPhone 通常不支援 eSIM。</p>
+          </div>
+
+          <div class="pt-2 flex items-center justify-between border-t border-slate-100">
+            <div>
+              <div class="text-xs text-slate-400">${currentDays} 天計算費用</div>
+              <div class="text-xl font-extrabold text-blue-700">NT$ ${price.total}</div>
+            </div>
+            <a href="${plan.buyUrl}" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+              前往官方購買
+            </a>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('planModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closePlanModal() {
+      document.getElementById('planModal').classList.add('hidden');
+    }
+
+    function toggleIpModal() {
+      const modal = document.getElementById('ipModal');
+      modal.classList.toggle('hidden');
+    }
+
+    // --- Initializer ---
+    window.addEventListener('DOMContentLoaded', () => {
+      setDays(5); // Default to 5 days
+    });
+  </script>
+</body>
+</html>
